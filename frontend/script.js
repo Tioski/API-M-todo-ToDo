@@ -76,6 +76,7 @@ async function saveTask(e) {
             realizada : taskAtual.realizada
             });
             editingTaskId = null;
+            inputLabel.innerText = "Adicione sua tarefa";
         } else {
 
             await axios.post(API_URL, {
@@ -97,11 +98,11 @@ async function deleteTask(id) {
     if (!confirm("Tem certeza que deseja excluir ?")) return;
 
     try {
-        axios.delete(`${API_URL}/${id}`);
+        await axios.delete(`${API_URL}/${id}`);
         fetchTasks();
 
     } catch (error) {
-        console.error("Erro ao deletar tarefa");
+        console.error("Erro ao deletar tarefa", error);
     }
 }
 
@@ -111,7 +112,7 @@ function prepareEdit(id) {
 
     editingTaskId = id;
     taskInput.value = taskAtual.tarefa;
-    inputLavel.innerText = "Edite sua tarefa";
+    inputLabel.innerText = "Edite sua tarefa";
     taskInput.focus();
 
 }
@@ -129,7 +130,7 @@ async function toggleTask(id){
         });
         fetchTasks();
 
-    } catch(erro){
+    } catch(error){
         console.error("Erro ao atualizar status da tarefa", error);
     }
 }
